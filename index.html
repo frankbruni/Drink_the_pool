@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drink the Pool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Toasts -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="container">
+    <header class="header">
+      <h1>Drink the Pool</h1>
+      <p class="muted">Calling All Pool Drainers. Let's log those OZ.</p>
+    </header>
+
+    <!-- Pool card -->
+    <section class="card">
+      <div class="row space-between">
+        <div>
+          <div id="pool-status" class="stat">Loading…</div>
+          <div id="pool-metrics" class="substat"></div>
+          <div id="pace-status" class="substat"></div>
+        </div>
+      </div>
+
+      <div class="pool-hero" aria-label="Pool progress">
+        <div class="pool-tank">
+          <div id="pool-fill" class="pool-fill"></div>
+          <div id="pool-label" class="pool-label"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <div class="name-row">
+            <label for="user-name">Your name</label>
+            <input id="user-name" type="text" placeholder="e.g. Frank" />
+          </div>
+          <div class="muted tiny">
+            Tip: your name is saved locally in your browser.
+          </div>
+        </div>
+
+        <div class="buttons">
+          <div class="row">
+            <button id="drink-16" class="primary">+16 oz</button>
+            <button id="undo-last" class="secondary">Undo last</button>
+          </div>
+
+          <div class="inline">
+            <input id="drink-amount" type="number" min="1" step="1" placeholder="Custom oz" />
+            <button id="drink-custom" class="secondary">Add</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analytics card -->
+    <section class="card">
+      <div class="analytics-header">
+        <div>
+          <h2>Consumption</h2>
+          <p class="muted">Chart and totals always reflect the selected date range.</p>
+        </div>
+
+        <div class="filters">
+          <div class="field">
+            <label for="range-select">Date range</label>
+            <select id="range-select">
+              <option value="7">Last 7 days</option>
+              <option value="14">Last 14 days</option>
+              <option value="30" selected>Last 30 days</option>
+              <option value="90">Last 90 days</option>
+              <option value="365">Last 365 days</option>
+              <option value="all">All time</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="analytics-grid">
+        <div>
+          <div class="field">
+            <label>Users on chart</label>
+            <div id="user-picker" class="picker"></div>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="range-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="row space-between">
+          <h3>Totals</h3>
+          <div id="totals-caption" class="muted tiny"></div>
+        </div>
+
+        <table class="totals-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th class="num">Total (oz)</th>
+              <th class="num">% of range</th>
+            </tr>
+          </thead>
+          <tbody id="totals-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Recent activity -->
+    <section class="card">
+      <div class="row space-between">
+        <h2>Recent drinks</h2>
+        <div class="muted tiny">Live feed (latest 20)</div>
+      </div>
+      <div id="log-feed" class="feed"></div>
+    </section>
+  </div>
+
+  <!-- Chart.js must load before app.js uses Chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="app.js?v=2"></script>
+</body>
+</html>
