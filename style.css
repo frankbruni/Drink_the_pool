@@ -328,3 +328,36 @@ button:disabled{
 .pool-tank.pulse{
   animation: poolPulse 450ms ease;
 }
+/* ---------- Mobile responsiveness ---------- */
+@media (max-width: 720px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    width: 100%;
+  }
+
+  .analytics-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .chart-wrap {
+    padding: 6px;
+  }
+
+  canvas {
+    max-height: 260px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .name-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
