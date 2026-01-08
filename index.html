@@ -3,26 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Drink the Pool</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Drink a Pool</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/logo.png" />
+
+  <!-- Cache-bust CSS when you change it -->
+  <link rel="stylesheet" href="style.css?v=7" />
 </head>
+
 <body>
+  <!-- HERO / SPLASH -->
+  <section class="hero" aria-label="Drink the Pool splash">
+    <div class="hero-inner">
+      <img class="hero-logo" src="assets/logo.png" alt="Drink the Pool logo" />
+
+      <div class="hero-title">Drink the Pool</div>
+      <div class="hero-subtitle">
+        Log water with friends. Watch the pool drain in real time.
+      </div>
+
+      <div class="hero-quicklog card card-strong">
+  <div class="quicklog-grid">
+    <div class="field">
+      <label for="user-name">Your name</label>
+      <input id="user-name" type="text" placeholder="e.g. Frank" />
+      <div class="muted tiny">Saved on this device.</div>
+    </div>
+
+    <div class="quicklog-actions">
+      <div class="row">
+        <button id="drink-32" class="primary">+32 oz</button>
+        <button id="undo-last" class="secondary">Undo last</button>
+      </div>
+
+      <div class="inline">
+        <input id="drink-amount" type="number" min="1" step="1" placeholder="Custom oz" />
+        <button id="drink-custom" class="secondary">Add</button>
+      </div>
+
+      <a class="hero-jump muted tiny" href="#app">See stats ↓</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="hero-hint">
+        Tip: add your name once — we’ll remember it on this device.
+      </div>
+    </div>
+
+    <div class="hero-wave" aria-hidden="true"></div>
+  </section>
+
   <!-- Toasts -->
   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-  <div class="container">
-    <header class="header">
-      <h1>Drink the Pool</h1>
-      <p class="muted">Calling All Pool Drainers. Let's log those OZ.</p>
-    </header>
+  <!-- APP -->
+  <main id="app" class="container">
+    <!-- Remove the old small header; the hero replaces it -->
 
     <!-- Pool card -->
-    <section class="card">
+    <section class="card card-strong">
       <div class="row space-between">
         <div>
           <div id="pool-status" class="stat">Loading…</div>
           <div id="pool-metrics" class="substat"></div>
-          <div id="pace-status" class="substat"></div>
+          
         </div>
       </div>
 
@@ -33,29 +80,7 @@
         </div>
       </div>
 
-      <div class="controls">
-        <div class="field">
-          <div class="name-row">
-            <label for="user-name">Your name</label>
-            <input id="user-name" type="text" placeholder="e.g. Frank" />
-          </div>
-          <div class="muted tiny">
-            Tip: your name is saved locally in your browser.
-          </div>
-        </div>
-
-        <div class="buttons">
-          <div class="row">
-            <button id="drink-16" class="primary">+16 oz</button>
-            <button id="undo-last" class="secondary">Undo last</button>
-          </div>
-
-          <div class="inline">
-            <input id="drink-amount" type="number" min="1" step="1" placeholder="Custom oz" />
-            <button id="drink-custom" class="secondary">Add</button>
-          </div>
-        </div>
-      </div>
+      
     </section>
 
     <!-- Analytics card -->
@@ -121,10 +146,15 @@
       </div>
       <div id="log-feed" class="feed"></div>
     </section>
-  </div>
+
+    <footer class="footer muted tiny">
+      Built for fun. Drink water. Don’t actually drink a pool.
+    </footer>
+  </main>
 
   <!-- Chart.js must load before app.js uses Chart -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="module" src="app.js?v=2"></script>
+  <script type="module" src="app.js?v=3"></script>
 </body>
 </html>
+

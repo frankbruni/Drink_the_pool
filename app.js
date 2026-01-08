@@ -51,14 +51,13 @@ function getDom() {
     // pool
     poolStatus: document.getElementById("pool-status"),
     poolMetrics: document.getElementById("pool-metrics"),
-    paceStatus: document.getElementById("pace-status"),
     poolFill: document.getElementById("pool-fill"),
     poolLabel: document.getElementById("pool-label"),
     poolTank: document.querySelector(".pool-tank"),
 
     // controls
     nameInput: document.getElementById("user-name"),
-    drink16Btn: document.getElementById("drink-16"),
+    drink32Btn: document.getElementById("drink-32"),
     amountInput: document.getElementById("drink-amount"),
     drinkCustomBtn: document.getElementById("drink-custom"),
     undoBtn: document.getElementById("undo-last"),
@@ -120,7 +119,7 @@ function pulsePool(dom) {
 }
 
 function setBusy(dom, isBusy) {
-  dom.drink16Btn.disabled = isBusy;
+  dom.drink32Btn.disabled = isBusy;
   dom.drinkCustomBtn.disabled = isBusy;
   dom.undoBtn.disabled = isBusy;
 }
@@ -407,17 +406,37 @@ function buildDailySeriesForRange(snap, dayKeys) {
 function renderUserPicker(dom, users, selectedSet) {
   dom.userPicker.innerHTML = "";
 
-  const mkRow = (labelHtml, value) => {
+  function addRow(labelText, value, bold = false) {
     const row = document.createElement("div");
-    row.innerHTML = `<label><input type="checkbox" data-user="${value}"> ${labelHtml}</label>`;
-    const cb = row.querySelector("input");
-    cb.checked = selectedSet.has(value);
-    dom.userPicker.appendChild(row);
-  };
+    row.className = "picker-row";
 
-  mkRow("<b>All (combined)</b>", "__ALL__");
-  users.sort().forEach((u) => mkRow(escapeHtml(u), u));
+    const label = document.createElement("label");
+
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.dataset.user = value;
+    cb.checked = selectedSet.has(value);
+
+    const text = document.createElement(bold ? "strong" : "span");
+    text.textContent = labelText;
+
+    label.appendChild(cb);
+    label.appendChild(text);
+
+    row.appendChild(label);
+    dom.userPicker.appendChild(row);
+  }
+
+  addRow("All (combined)", "__ALL__", true);
+
+  users
+    .slice()
+    .sort((a, b) => a.localeCompare(b))
+    .forEach((u) => addRow(u, u, false));
 }
+
+
+
 
 function getSelectedUsers(dom) {
   const set = new Set();
@@ -533,14 +552,6 @@ function setupRangeDashboard({ db, dom, state }) {
       const series = buildDailySeriesForRange(snap, labels);
       const users = Array.from(series.byUser.keys());
 
-      // Pace-to-finish (based on ALL series in selected range)
-      const avgDaily = computeAvgDailyOz(series.all);
-      if (state.remaining > 0 && avgDaily > 0.0001) {
-        const daysLeft = state.remaining / avgDaily;
-        dom.paceStatus.textContent = `At this pace: ~${daysLeft.toFixed(1)} days to empty the pool`;
-      } else {
-        dom.paceStatus.textContent = `At this pace: —`;
-      }
 
       renderUserPicker(dom, users, selectedUsers);
       const meName = (dom.nameInput.value || "").trim();
@@ -572,13 +583,13 @@ function setupRangeDashboard({ db, dom, state }) {
 function wireButtons(ctx) {
   const { dom } = ctx;
 
-  dom.drink16Btn.addEventListener("click", async () => {
+  dom.drink32Btn.addEventListener("click", async () => {
     try {
       setBusy(dom, true);
       const name = getUserName(dom); // validate + focus
-      await recordDrink(ctx, 16);
+      await recordDrink(ctx, 32);
       pulsePool(dom);
-      showToast(dom, "+16 oz logged", `Logged as ${name}`);
+      showToast(dom, "+32 oz logged", `Logged as ${name}`);
     } catch (err) {
       console.error(err);
       alert(err.message || "Failed to save. Check console.");
